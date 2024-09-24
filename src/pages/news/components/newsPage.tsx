@@ -11,6 +11,9 @@ export const NewsPage: React.FC = () => {
 
   const addPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) {
+      alert('необходимо авторизоваться');
+    }
 
     try {
       const response = await axios.post(
@@ -68,11 +71,13 @@ export const NewsPage: React.FC = () => {
       {news &&
         news.map((post) => {
           return (
-            <div>
-              <h3>Пользователь: {post.User.email}</h3>
-              <p>{post.title}</p>
-              <p>{post.content}</p>
-            </div>
+            <>
+              <div>
+                <h3>Пользователь: {post.User.email}</h3>
+                <p>{post.title}</p>
+                <p>{post.content}</p>
+              </div>
+            </>
           );
         })}
     </div>

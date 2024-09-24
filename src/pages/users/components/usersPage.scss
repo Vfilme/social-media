@@ -1,0 +1,21 @@
+button {
+  margin: 10px;
+}
+
+div.chats {
+  border: 1px grey solid;
+  ul {
+    padding: 0;
+    list-style: none;
+    li {
+      padding: 8px;
+      transition: 0.1s;
+      &:hover {
+        background-color: rgb(231, 231, 231);
+      }
+      &.actual {
+        background-color: rgb(231, 231, 231);
+      }
+    }
+  }
+}

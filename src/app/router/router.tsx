@@ -8,6 +8,7 @@ import { AuthPage } from '../../pages/authorization';
 import { StartPage } from '../../pages/start/components/startPage';
 import { SignInPage } from '../../pages/signIn';
 import { SignUpPage } from '../../pages/signUp/components/SignUpPage';
+import { UsersPage } from '../../pages/users';
 
 export const router = createBrowserRouter([
   {
@@ -27,9 +28,13 @@ export const router = createBrowserRouter([
             element: <UserPage />,
           },
           {
-            path: 'messenger',
+            path: 'messenger/:id?',
             element: <MessengerPage />,
           },
+          // {
+          //   path: 'users',
+          //   element: <UsersPage />,
+          // },
         ],
       },
       {
