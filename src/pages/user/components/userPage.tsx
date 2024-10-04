@@ -1,48 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../../shared/hooks';
-import axios from 'axios';
+import { News } from '../../../widgets/post/components/post';
+import { getUserPosts } from '../model/getUserPosts';
+import { removePost } from '../model/removePost';
+import { addPost } from '../model/addPost';
 
 export const UserPage: React.FC = () => {
-  const user = useAppSelector((state: any) => state.user.user);
   const [userPosts, setUserPosts] = useState<any>();
-
-  const removePost = async (id: number) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/remove-post/${id}`
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
 
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const { data } = await axios.get('http://localhost:5000/user-posts', {
-          withCredentials: true,
-        });
-        setUserPosts(data.userPosts);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getPosts();
+    (async () => {
+      const userPosts = await getUserPosts();
+      setUserPosts(userPosts);
+    })();
   }, []);
 
   return (
     <div>
       <h1>user page</h1>
-      <p>user: {JSON.stringify(user)}</p>
       <p>
-        posts:{' '}
         {userPosts &&
           userPosts.map((e: any) => {
             return (
               <div>
-                <p>{e.title}</p>
-                <p>{e.content}</p>
+                <News post={e} />
                 <button
                   onClick={() => {
                     removePost(e.id);
@@ -54,6 +36,27 @@ export const UserPage: React.FC = () => {
             );
           })}
       </p>
+      <h3>create post:</h3>
+      <form onSubmit={(e) => addPost(e, title, content)} className="createPost">
+        <p>заголовок:</p>
+        <br />
+        <input
+          type="text"
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
+        <br />
+        <p>содержание</p>
+        <input
+          type="text"
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+        />
+        <br />
+        <button type="submit">создать пост</button>
+      </form>
     </div>
   );
 };

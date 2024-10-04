@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { URL } from '../../../shared/const/urls';
 
 export const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -9,7 +10,7 @@ export const SignUpPage: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/register', {
+      const response = await axios.post(`${URL.BAZE}/auth/regist`, {
         email,
         password,
       });

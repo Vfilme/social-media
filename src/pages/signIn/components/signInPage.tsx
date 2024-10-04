@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../shared/hooks';
-import { setUser } from '../../../features/post/makePost';
+import { URL } from '../../../shared/const/urls';
+import { useAppDispatch } from '../../../shared/store/hooks/useAppDispatch';
+import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
+import { setUser } from '../../../shared/store/slices/userSlice';
 
 export const SignInPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [data] = useState();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: any) => state.user.user);
 
@@ -15,7 +16,7 @@ export const SignInPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/login',
+        `${URL.BAZE}/auth/login`,
         {
           email,
           password,

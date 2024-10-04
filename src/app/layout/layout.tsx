@@ -1,11 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Header } from '../../../widgets/header/components/header';
+import './layout.scss';
+import { Sidebar } from '../../widgets/header';
 
 export const Layout: React.FC = () => {
   return (
-    <div>
-      <Header />
+    <div className="page-layout">
+      <Sidebar />
       <Outlet />
     </div>
   );

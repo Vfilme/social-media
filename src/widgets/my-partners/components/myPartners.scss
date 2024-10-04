@@ -1,9 +1,7 @@
-button {
-  margin: 10px;
-}
+@use '../../../shared/const/borders.scss' as b;
 
-div.chats {
-  border: 1px grey solid;
+div.my-partners {
+  border: b.$primary-border;
   ul {
     padding: 0;
     list-style: none;

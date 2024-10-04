@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { router } from './router';
+import { router } from './routers';
 import { Provider } from 'react-redux';
-import { store } from './stores/mainStore';
-import './global.scss';
+import './styles/global.scss';
+import { store } from '../shared/store';
 
 export const App: React.FC = () => {
   return (

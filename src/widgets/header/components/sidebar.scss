@@ -1,0 +1,22 @@
+@use '../../../shared/const/colors.scss' as c;
+@use '../../../shared/const/borders.scss' as b;
+
+div.sidebar {
+  ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+    li {
+      display: flex;
+      a {
+        width: 100%;
+        color: black;
+        padding: 5px;
+        transition: 0.2s;
+        &:hover {
+          background-color: rgb(224, 224, 224);
+        }
+      }
+    }
+  }
+}

@@ -1,16 +1,17 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppDispatch } from '../../../shared/hooks';
-import { setUser } from '../../../features/post/makePost';
+import './startPage.scss';
+import { URL } from '../../../shared/const/urls';
+import { useAppDispatch } from '../../../shared/store/hooks/useAppDispatch';
+import { setUser } from '../../../shared/store/slices/userSlice';
 
 export const StartPage: React.FC = () => {
-  const [statusToken, setStatusToken] = useState();
   const dispatch = useAppDispatch();
 
   const checkToken = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/token', {
+      const response = await axios.get(`${URL.BAZE}/auth/token`, {
         withCredentials: true,
       });
       const user = response.data.user;
@@ -20,7 +21,6 @@ export const StartPage: React.FC = () => {
       } else {
         console.log('user не получен');
       }
-      setStatusToken(response.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -30,10 +30,5 @@ export const StartPage: React.FC = () => {
     checkToken();
   });
 
-  return (
-    <>
-      <Outlet />
-      <div>{statusToken}</div>
-    </>
-  );
+  return <Outlet />;
 };
