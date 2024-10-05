@@ -1,7 +1,7 @@
 @use '../../../shared/const/borders.scss' as b;
 
 div.my-partners {
-  border: b.$primary-border;
+  border-right: b.$primary-border;
   ul {
     padding: 0;
     list-style: none;
