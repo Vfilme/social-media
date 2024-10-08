@@ -1,1 +1,1 @@
-import { SignUpPage } from './components/SignUpPage';
+export { SignUpPage } from './components/signUpPage';

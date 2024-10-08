@@ -1,0 +1,17 @@
+@use '../../../shared/const/borders.scss' as b;
+
+form.sign-up {
+  border: b.$primary-border;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  input {
+    box-sizing: border-box;
+  }
+  input,
+  button {
+    height: 40px;
+  }
+}

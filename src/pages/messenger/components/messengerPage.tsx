@@ -6,7 +6,7 @@ import { Chat } from '../../../widgets/chat/components/chat';
 export const MessengerPage: React.FC = () => {
   const [currentPartner, setCurrentPartner] = useState<string | null>(null);
   return (
-    <div className="messenger">
+    <div className="messenger-page">
       <MyPartners partnerName={currentPartner} />
       <Chat
         setCurrentPartner={(currentName) => {

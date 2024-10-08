@@ -15,6 +15,9 @@ export const Sidebar: React.FC = () => {
         <li>
           <Link to="/messenger">сообщения</Link>
         </li>
+        <li>
+          <Link to={'/friends'}>друзья</Link>
+        </li>
       </ul>
     </div>
   );

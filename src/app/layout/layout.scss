@@ -6,8 +6,10 @@ div.page-layout {
   max-width: 1200px;
   margin: auto;
 
-  overflow: hidden;
-  position: relative;
-  height: 100vh;
-  box-sizing: border-box;
+  &.messenger-layout {
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    height: 100vh;
+  }
 }

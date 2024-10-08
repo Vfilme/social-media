@@ -4,43 +4,44 @@ div.container-chat {
   display: flex;
   flex-direction: column;
 
-  div.container-messages {
+  div.chat {
     position: relative;
     width: 100%;
     height: 100%;
 
-    div.messages {
-      padding: 20px;
-      display: grid;
-      gap: 10px;
+    div.container-messages {
       overflow-y: scroll;
       position: absolute;
       top: 0;
       bottom: 0px;
       right: 0;
       left: 0;
-
-      div.message {
-        border-radius: 8px;
-        padding: 8px;
-        color: white;
-        &.me {
-          background-color: green;
-          text-align: right;
-          justify-self: right;
-        }
-        &.notme {
-          background-color: grey;
+      div.messages {
+        padding: 20px;
+        display: grid;
+        gap: 10px;
+        div.message {
+          border-radius: 8px;
+          padding: 8px;
           color: white;
-          text-align: left;
-          justify-self: left;
-        }
-        p {
-          font-size: 16px;
-          margin: 3px;
-        }
-        h4 {
-          margin: 0;
+          &.me {
+            background-color: green;
+            text-align: right;
+            justify-self: right;
+          }
+          &.notme {
+            background-color: grey;
+            color: white;
+            text-align: left;
+            justify-self: left;
+          }
+          p {
+            font-size: 16px;
+            margin: 3px;
+          }
+          h4 {
+            margin: 0;
+          }
         }
       }
     }

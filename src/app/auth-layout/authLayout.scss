@@ -1,0 +1,13 @@
+@use '../../shared/const/borders.scss' as b;
+
+div.auth-layout {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  div {
+    max-width: 500px;
+    width: 100%;
+  }
+}

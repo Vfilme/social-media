@@ -47,19 +47,21 @@ export const Chat: React.FC<Props> = ({ setCurrentPartner }) => {
 
   return (
     <div className="container-chat">
-      <div className="container-messages">
-        <div className="messages" ref={messagesEndRef}>
-          {messages &&
-            messages.map((m) => {
-              return (
-                <div
-                  className={`${m.user_id == user?.id ? 'me' : 'notme'} message`}
-                >
-                  <h4>{user.id == m.user_id ? user.email : partnerName}</h4>
-                  <p>{m.content}</p>
-                </div>
-              );
-            })}
+      <div className="chat">
+        <div className="container-messages" ref={messagesEndRef}>
+          <div className="messages">
+            {messages &&
+              messages.map((m) => {
+                return (
+                  <div
+                    className={`${m.user_id == user?.id ? 'me' : 'notme'} message`}
+                  >
+                    <h4>{user.id == m.user_id ? user.email : partnerName}</h4>
+                    <p>{m.content}</p>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
       <div className="container-send-message">

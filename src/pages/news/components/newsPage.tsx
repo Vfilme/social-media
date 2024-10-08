@@ -10,6 +10,7 @@ export const NewsPage: React.FC = () => {
     (async () => {
       const posts = await getPosts();
       setNews(posts);
+      console.log(posts);
     })();
   }, []);
   return (
@@ -18,7 +19,7 @@ export const NewsPage: React.FC = () => {
       <div className="posts">
         {news &&
           news.map((news) => {
-            return <News userName={news.User.email} post={news} />;
+            return <News userName={news.User.login} post={news} />;
           })}
       </div>
     </div>
