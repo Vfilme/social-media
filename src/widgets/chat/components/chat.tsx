@@ -12,15 +12,20 @@ export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<any[] | []>([]);
   const user: any = useAppSelector((state) => state.user.user);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const idRef = useRef(id);
 
   useEffect(() => {
+    let chatId = id;
     if (user) {
       webSocket(
         user.login,
-        id,
+        chatId,
         (data) => {
-          const { messages } = data;
-          setMessages((prevMessages) => [...prevMessages, ...messages]);
+          const { messages, chatId } = data;
+          if (chatId == idRef.current) {
+            setMessages((prevMessages) => [...prevMessages, ...messages]);
+          }
+          console.log('пришло сообщение');
         },
         (ws) => {
           setSocket(ws);
@@ -31,6 +36,7 @@ export const Chat: React.FC = () => {
 
   useEffect(() => {
     setMessages([]);
+    idRef.current = id;
   }, [id]);
 
   useEffect(() => {
@@ -39,6 +45,10 @@ export const Chat: React.FC = () => {
 
   return (
     <div className="container-chat">
+      <h1>
+        {id}
+        {user?.login}
+      </h1>
       <div className="chat">
         <div className="container-messages" ref={messagesEndRef}>
           <div className="messages">
