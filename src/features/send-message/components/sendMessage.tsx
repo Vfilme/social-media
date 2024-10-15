@@ -16,7 +16,7 @@ export const SendMessage: React.FC<Props> = ({ socket }) => {
 
   const writeMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    sendMessage(user.id, id, socket, message);
+    sendMessage(user.login, id, socket, message);
     setMessage('');
   };
 

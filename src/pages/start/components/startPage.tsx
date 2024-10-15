@@ -12,7 +12,6 @@ export const StartPage: React.FC = () => {
     const user = await getUser();
     if (user) {
       dispatch(setUser(user));
-      console.log('user: ', user);
     } else {
       console.log('user не получен');
       navigate('auth');

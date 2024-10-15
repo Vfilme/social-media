@@ -29,6 +29,7 @@ export const SignUpPage: React.FC = () => {
     (async () => {
       const { message, user } = await registGetToken(formData);
       if (user) {
+        console.log(user);
         dispatch(setUser(user));
         navigate('/news');
       }

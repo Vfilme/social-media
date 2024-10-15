@@ -1,0 +1,22 @@
+@use '../../../shared/const/borders.scss' as b;
+
+div.friends-page {
+  div.user {
+    position: relative;
+    padding: 10px;
+    div.user-menu {
+      position: absolute;
+      display: none;
+      background-color: white;
+      border: 1px black solid;
+      user-select: none;
+      padding: 2px;
+    }
+    &:hover {
+      background-color: rgb(233, 233, 233);
+      div.user-menu {
+        display: block;
+      }
+    }
+  }
+}

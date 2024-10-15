@@ -1,15 +1,15 @@
 import { WSTypes } from '../../../shared/types/WSTypes';
 
 export const sendMessage = (
-  userId: number | undefined,
+  userLogin: string,
   chatId: string | undefined,
   socket: WebSocket | null,
   message: string
 ) => {
-  if (userId && !isNaN(Number(chatId)) && socket && message !== '') {
+  if (userLogin && !isNaN(Number(chatId)) && socket && message !== '') {
     const data = JSON.stringify({
       type: WSTypes.AddMessage,
-      userId,
+      userLogin,
       chatId,
       content: message,
     });

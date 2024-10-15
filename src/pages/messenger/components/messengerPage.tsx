@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './messangerPage.scss';
-import { MyPartners } from '../../../widgets/my-partners';
 import { Chat } from '../../../widgets/chat/components/chat';
+import { MyChats } from '../../../widgets/my-chats';
 
 export const MessengerPage: React.FC = () => {
-  const [currentPartner, setCurrentPartner] = useState<string | null>(null);
   return (
     <div className="messenger-page">
-      <MyPartners partnerName={currentPartner} />
-      <Chat
-        setCurrentPartner={(currentName) => {
-          setCurrentPartner(currentName);
-        }}
-      />
+      <MyChats />
+      <Chat />
     </div>
   );
 };

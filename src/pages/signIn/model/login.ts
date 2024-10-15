@@ -7,7 +7,7 @@ export const login = async (formData: LoginData) => {
     const { data } = await axios.post(
       `${URL.BAZE}/auth/login`,
       {
-        email: formData.email,
+        login: formData.login,
         password: formData.password,
       },
       { withCredentials: true }

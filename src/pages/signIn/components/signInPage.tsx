@@ -1,6 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { URL } from '../../../shared/const/urls';
+import React, { useState } from 'react';
 import { useAppDispatch } from '../../../shared/store/hooks/useAppDispatch';
 import { setUser } from '../../../shared/store/slices/userSlice';
 import './signInPage.scss';
@@ -12,7 +10,7 @@ export const SignInPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<LoginData>({
-    email: '',
+    login: '',
     password: '',
   });
 
@@ -25,7 +23,7 @@ export const SignInPage: React.FC = () => {
         dispatch(setUser(user));
         navigate('/news');
       }
-      console.log(message);
+      console.log(message, 'user Login: ', user);
     })();
   };
 
@@ -36,7 +34,7 @@ export const SignInPage: React.FC = () => {
         <input
           type="text"
           onChange={(e) =>
-            setFormData((data) => ({ ...data, email: e.target.value }))
+            setFormData((data) => ({ ...data, login: e.target.value }))
           }
           placeholder="Введите вашу электронную почту"
         />

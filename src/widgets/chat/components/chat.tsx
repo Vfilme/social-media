@@ -3,31 +3,23 @@ import { useParams } from 'react-router-dom';
 import './chat.scss';
 import { webSocket } from '../api/webSocket';
 import { SendMessage } from '../../../features/send-message/components/sendMessage';
-import { MessageChat } from '../types/message';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { scrollToBottom } from './scrollToBottom';
 
-interface Props {
-  setCurrentPartner: (currentPartner: string) => void;
-}
-
-export const Chat: React.FC<Props> = ({ setCurrentPartner }) => {
+export const Chat: React.FC = () => {
   const { id } = useParams<{ id: string | undefined }>();
-  const [partnerName, setPartnerName] = useState<string | null>(null);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<MessageChat[] | []>([]);
+  const [messages, setMessages] = useState<any[] | []>([]);
   const user: any = useAppSelector((state) => state.user.user);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (user) {
       webSocket(
-        user.id,
+        user.login,
         id,
         (data) => {
-          const { messages, userName } = data;
-          setPartnerName(userName);
-          setCurrentPartner(userName);
+          const { messages } = data;
           setMessages((prevMessages) => [...prevMessages, ...messages]);
         },
         (ws) => {
@@ -54,9 +46,9 @@ export const Chat: React.FC<Props> = ({ setCurrentPartner }) => {
               messages.map((m) => {
                 return (
                   <div
-                    className={`${m.user_id == user?.id ? 'me' : 'notme'} message`}
+                    className={`${m?.User?.login == user?.login ? 'me' : 'notme'} message`}
                   >
-                    <h4>{user.id == m.user_id ? user.email : partnerName}</h4>
+                    <h4>{m.User.login}</h4>
                     <p>{m.content}</p>
                   </div>
                 );

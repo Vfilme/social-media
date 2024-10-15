@@ -2,7 +2,7 @@ import { URL } from '../../../shared/const/urls';
 import { WSTypes } from '../../../shared/types/WSTypes';
 
 export const webSocket = (
-  userId: number,
+  userLogin: string,
   chatId: string | undefined,
   onMessage: (data: any) => void,
   setConnect: (socket: WebSocket) => void
@@ -11,11 +11,11 @@ export const webSocket = (
   ws.onopen = () => {
     setConnect(ws);
     console.log('Соединение с сервером установлено');
-    if (userId && !isNaN(Number(chatId))) {
+    if (userLogin && !isNaN(Number(chatId))) {
       const data = JSON.stringify({
         type: WSTypes.GetMessages,
-        chatId: chatId,
-        userId: userId,
+        chatId,
+        userLogin,
       });
       ws.send(data);
     }

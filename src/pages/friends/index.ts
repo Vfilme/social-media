@@ -1,1 +1,1 @@
-export { FriendsPage } from './friendsPage';
+export { FriendsPage } from './components/friendsPage';
