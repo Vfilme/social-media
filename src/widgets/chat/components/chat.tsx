@@ -5,8 +5,13 @@ import { webSocket } from '../api/webSocket';
 import { SendMessage } from '../../../features/send-message/components/sendMessage';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { scrollToBottom } from './scrollToBottom';
+import { WSTypes } from '../../../shared/types/WSTypes';
 
-export const Chat: React.FC = () => {
+interface Props {
+  setLastChatId: (id: number) => void;
+}
+
+export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const { id } = useParams<{ id: string | undefined }>();
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<any[] | []>([]);
@@ -20,12 +25,27 @@ export const Chat: React.FC = () => {
       webSocket(
         user.login,
         chatId,
-        (data) => {
-          const { messages, chatId } = data;
-          if (chatId == idRef.current) {
-            setMessages((prevMessages) => [...prevMessages, ...messages]);
+        (message) => {
+          const { payload, action } = message;
+          switch (action) {
+            case WSTypes.GetMessages:
+              if (payload.chatId == idRef.current) {
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  ...payload.messages,
+                ]);
+              }
+              break;
+            case WSTypes.AddMessage:
+              if (payload.chatId == idRef.current) {
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  payload.message,
+                ]);
+              }
+              setLastChatId(payload.chatId);
+              break;
           }
-          console.log('пришло сообщение');
         },
         (ws) => {
           setSocket(ws);
@@ -45,10 +65,6 @@ export const Chat: React.FC = () => {
 
   return (
     <div className="container-chat">
-      <h1>
-        {id}
-        {user?.login}
-      </h1>
       <div className="chat">
         <div className="container-messages" ref={messagesEndRef}>
           <div className="messages">

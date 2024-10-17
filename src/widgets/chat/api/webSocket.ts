@@ -22,8 +22,8 @@ export const webSocket = (
   };
 
   ws.onmessage = (event: MessageEvent) => {
-    const data = JSON.parse(event.data);
-    onMessage(data);
+    const message = JSON.parse(event.data);
+    onMessage(message);
   };
   ws.onerror = (error: Event) => {
     console.error('Ошибка WebSocket:', error);

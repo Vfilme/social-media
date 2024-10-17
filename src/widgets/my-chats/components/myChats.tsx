@@ -4,12 +4,26 @@ import { getUsers } from '../model/getUsers';
 import { useEffect, useState } from 'react';
 import React = require('react');
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
+import { updateChats } from '../model/updateChats';
+import { sortChats } from '../model/sortChats';
 
-export const MyChats: React.FC = () => {
+interface Props {
+  lastChatId: number;
+}
+
+export const MyChats: React.FC<Props> = ({ lastChatId }) => {
   const { id } = useParams();
   const [chats, setChats] = useState<any[] | null | any>(null);
   const user: any = useAppSelector((state) => state.user.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (chats && lastChatId) {
+      const updatedChats = updateChats(chats, lastChatId);
+      const sortedChats = sortChats(updatedChats);
+      setChats(sortedChats);
+    }
+  }, [lastChatId]);
 
   useEffect(() => {
     if (user) {
