@@ -63,6 +63,23 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
     scrollToBottom(messagesEndRef);
   }, [messages]);
 
+  const getTime = (dateString: string): string => {
+    const date = new Date(dateString);
+
+    let wrongHours = date.getHours();
+    let correctHours;
+    if (wrongHours < 14) {
+      correctHours = wrongHours + 10;
+    } else {
+      correctHours = 10 - (24 - wrongHours);
+    }
+
+    const hours = correctHours.toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${hours}:${minutes}`;
+  };
+
   return (
     <div className="container-chat">
       <div className="chat">
@@ -74,8 +91,10 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
                   <div
                     className={`${m?.User?.login == user?.login ? 'me' : 'notme'} message`}
                   >
-                    <h4>{m.User.login}</h4>
-                    <p>{m.content}</p>
+                    <div className="message-content">
+                      {m.content}
+                      <span className="data">{getTime(m.sent_at)}</span>
+                    </div>
                   </div>
                 );
               })}
