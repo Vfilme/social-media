@@ -20,7 +20,6 @@ export const FriendsPage: React.FC = () => {
       })();
     }
   }, [users]);
-
   const openChat = async (partnerLogin: string) => {
     const chatId: any = await getChatId(user.login, partnerLogin);
     navigate(`/messenger/${chatId}`);
@@ -32,7 +31,12 @@ export const FriendsPage: React.FC = () => {
         {users &&
           users.map((user: any) => {
             return (
-              <div className="user">
+              <div
+                className="user"
+                onClick={() => {
+                  navigate(`/${user.login}`);
+                }}
+              >
                 <p>
                   {user.login}
                   <div

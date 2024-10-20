@@ -89,7 +89,7 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
               messages.map((m) => {
                 return (
                   <div
-                    className={`${m?.User?.login == user?.login ? 'me' : 'notme'} message`}
+                    className={`${m?.User?.login == user?.login ? 'me' : 'partner'} message`}
                   >
                     <div className="message-content">
                       {m.content}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { NewsPage } from '../../pages/news';
-import { UserPage } from '../../pages/user';
 import { MessengerPage } from '../../pages/messenger';
 import { AuthPage } from '../../pages/authorization';
 import { StartPage } from '../../pages/start/components/startPage';
@@ -10,6 +9,7 @@ import { Layout } from '../layout';
 import { FriendsPage } from '../../pages/friends';
 import { SignUpPage } from '../../pages/signUp';
 import { AuthLayout } from '../auth-layout';
+import { ProfilePage } from '../../pages/user';
 
 export const router = createBrowserRouter([
   {
@@ -25,8 +25,8 @@ export const router = createBrowserRouter([
             element: <NewsPage />,
           },
           {
-            path: 'user',
-            element: <UserPage />,
+            path: '/:login',
+            element: <ProfilePage />,
           },
           {
             path: 'messenger/:id?',
