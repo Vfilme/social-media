@@ -6,6 +6,7 @@ import React = require('react');
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { updateChats } from '../model/updateChats';
 import { sortChats } from '../model/sortChats';
+import { Chat } from '../../../entites/chat';
 
 interface Props {
   lastChatId: number;
@@ -48,12 +49,11 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
                 className={`${chat.id == id && 'actual'}`}
                 onClick={() => navigate(`/messenger/${chat.id}`)}
               >
-                <div className="avatar"></div>
-                <div className="info">
-                  <h2>{chat.Users[0].login}</h2>
-                  <span>Hello! Happy birthday</span>
-                  <span className="time">20:45</span>
-                </div>
+                <Chat
+                  login={chat.Users[0].login}
+                  message="Hello, happy birthday!"
+                  time={'20:45'}
+                />
               </li>
             );
           })}

@@ -1,51 +1,48 @@
 @use '../../../shared/const/borders.scss' as b;
 @use '../../../shared/const/colors.scss' as c;
 
-::-webkit-scrollbar {
-  background-color: c.$scrollbar-hard-grey;
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: c.$scrollbar-easy-grey;
-  border-radius: 5px;
-}
-
-div.partner-info {
-  display: flex;
-  height: 60px;
-  border-bottom: b.$primary-border;
-  padding-left: 10px;
-  align-items: center;
-  .info {
-    margin-left: 10px;
-    h2 {
-      font-size: 18px;
-      margin: 0;
-    }
-    span {
-      font-size: 12px;
-      color: c.$easy-grey;
-    }
-  }
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: red;
-  }
-}
-
 div.container-chat {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
+  ::-webkit-scrollbar {
+    background-color: c.$scrollbar-hard-grey;
+    width: 5px;
+  }
 
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: c.$scrollbar-easy-grey;
+    border-radius: 5px;
+  }
+  div.partner-info {
+    display: flex;
+    height: 60px;
+    border-bottom: b.$primary-border;
+    padding-left: 10px;
+    align-items: center;
+    .info {
+      margin-left: 10px;
+      h2 {
+        font-size: 18px;
+        margin: 0;
+      }
+      span {
+        font-size: 12px;
+        color: c.$easy-grey;
+      }
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: red;
+    }
+  }
   div.chat {
     margin: 0;
     padding: 0;
@@ -65,35 +62,6 @@ div.container-chat {
         padding: 20px;
         display: grid;
         gap: 10px;
-        div.message {
-          border-radius: 8px;
-          padding: 8px;
-          color: white;
-          position: relative;
-          color: white;
-          background-color: c.$hard-grey;
-          div.message-content {
-            span.data {
-              position: relative;
-              float: right;
-              top: 0.375rem;
-              margin-left: 0.3rem;
-              margin-right: -0.2rem;
-
-              font-size: 12px;
-              color: c.$easy-grey;
-            }
-          }
-
-          &.me {
-            text-align: right;
-            justify-self: right;
-          }
-          &.partner {
-            text-align: left;
-            justify-self: left;
-          }
-        }
       }
     }
   }

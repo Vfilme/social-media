@@ -6,6 +6,7 @@ import { SendMessage } from '../../../features/send-message/components/sendMessa
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { scrollToBottom } from './scrollToBottom';
 import { WSTypes } from '../../../shared/types/WSTypes';
+import { Message } from '../../../entites/message';
 
 interface Props {
   setLastChatId: (id: number) => void;
@@ -63,23 +64,6 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
     scrollToBottom(messagesEndRef);
   }, [messages]);
 
-  const getTime = (dateString: string): string => {
-    const date = new Date(dateString);
-
-    let wrongHours = date.getHours();
-    let correctHours;
-    if (wrongHours < 14) {
-      correctHours = wrongHours + 10;
-    } else {
-      correctHours = 10 - (24 - wrongHours);
-    }
-
-    const hours = correctHours.toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    return `${hours}:${minutes}`;
-  };
-
   return (
     <div className="container-chat">
       <div className="partner-info">
@@ -94,16 +78,7 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
           <div className="messages">
             {messages &&
               messages.map((m) => {
-                return (
-                  <div
-                    className={`${m?.User?.login == user?.login ? 'me' : 'partner'} message`}
-                  >
-                    <div className="message-content">
-                      {m.content}
-                      <span className="data">{getTime(m.sent_at)}</span>
-                    </div>
-                  </div>
-                );
+                return <Message message={m} />;
               })}
           </div>
         </div>
