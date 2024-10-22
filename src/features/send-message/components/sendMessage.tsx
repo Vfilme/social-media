@@ -29,7 +29,7 @@ export const SendMessage: React.FC<Props> = ({ socket }) => {
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Введите сообщение"
       />
-      <button type="submit">Отправить</button>
+      <button type="submit">send</button>
     </form>
   );
 };

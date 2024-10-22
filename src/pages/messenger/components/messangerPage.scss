@@ -1,7 +1,3 @@
-@use '../../../shared/const/borders.scss' as b;
-
 div.messenger-page {
-  border: b.$primary-border;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+  display: flex;
 }

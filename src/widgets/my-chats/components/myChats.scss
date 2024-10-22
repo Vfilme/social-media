@@ -1,18 +1,53 @@
 @use '../../../shared/const/borders.scss' as b;
+@use '../../../shared/const/colors.scss' as c;
 
 div.my-chats {
-  border-right: b.$primary-border;
+  max-width: 380px;
+  margin-top: 60px;
+  border: b.$primary-border;
+  border-bottom: 0;
+  max-width: 380px;
+  width: 100%;
+  box-sizing: border-box;
   ul {
     padding: 0;
+    margin: 0;
     list-style: none;
     li {
+      display: flex;
+      align-items: center;
+      height: 70px;
+      box-sizing: border-box;
       padding: 8px;
       transition: 0.1s;
+      position: relative;
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: red;
+      }
+      .info {
+        margin-left: 10px;
+        h2 {
+          font-size: 20px;
+          margin: 0;
+        }
+        span {
+          font-size: 12px;
+          color: c.$easy-grey;
+          &.time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+        }
+      }
       &:hover {
-        background-color: rgb(231, 231, 231);
+        background-color: c.$hard-grey;
       }
       &.actual {
-        background-color: rgb(231, 231, 231);
+        background-color: c.$hard-grey;
       }
     }
   }

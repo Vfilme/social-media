@@ -82,6 +82,13 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
 
   return (
     <div className="container-chat">
+      <div className="partner-info">
+        <div className="avatar"></div>
+        <div className="info">
+          <h2>Partner login</h2>
+          <span>last seen recently</span>
+        </div>
+      </div>
       <div className="chat">
         <div className="container-messages" ref={messagesEndRef}>
           <div className="messages">

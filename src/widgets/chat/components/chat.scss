@@ -1,15 +1,60 @@
 @use '../../../shared/const/borders.scss' as b;
+@use '../../../shared/const/colors.scss' as c;
+
+::-webkit-scrollbar {
+  background-color: c.$scrollbar-hard-grey;
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: c.$scrollbar-easy-grey;
+  border-radius: 5px;
+}
+
+div.partner-info {
+  display: flex;
+  height: 60px;
+  border-bottom: b.$primary-border;
+  padding-left: 10px;
+  align-items: center;
+  .info {
+    margin-left: 10px;
+    h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+    span {
+      font-size: 12px;
+      color: c.$easy-grey;
+    }
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: red;
+  }
+}
 
 div.container-chat {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   div.chat {
+    margin: 0;
+    padding: 0;
     position: relative;
     width: 100%;
-    height: 100%;
-
+    flex-grow: 1;
     div.container-messages {
+      box-sizing: border-box;
+      margin: auto;
       overflow-y: scroll;
       position: absolute;
       top: 0;
@@ -25,6 +70,8 @@ div.container-chat {
           padding: 8px;
           color: white;
           position: relative;
+          color: white;
+          background-color: c.$hard-grey;
           div.message-content {
             span.data {
               position: relative;
@@ -34,17 +81,15 @@ div.container-chat {
               margin-right: -0.2rem;
 
               font-size: 12px;
-              color: rgb(222, 222, 222);
+              color: c.$easy-grey;
             }
           }
+
           &.me {
-            background-color: green;
             text-align: right;
             justify-self: right;
           }
           &.partner {
-            background-color: grey;
-            color: white;
             text-align: left;
             justify-self: left;
           }
@@ -53,6 +98,7 @@ div.container-chat {
     }
   }
   div.container-send-message {
-    margin: 0px 20px 20px 20px;
+    margin: 20px;
+    margin-top: 0;
   }
 }

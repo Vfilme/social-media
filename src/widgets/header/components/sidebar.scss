@@ -2,21 +2,38 @@
 @use '../../../shared/const/borders.scss' as b;
 
 div.sidebar {
+  width: 180px;
   ul {
     padding: 0;
     list-style-type: none;
-    margin: 0;
+    margin: 10px 10px 0 10px;
+
     li {
-      display: flex;
+      height: 30px;
+      margin: 0 auto;
+      align-content: center;
+      &:hover {
+        background-color: c.$hard-grey;
+      }
       a {
         width: 100%;
-        color: black;
+        color: white;
         padding: 5px;
         transition: 0.2s;
-        &:hover {
-          background-color: rgb(224, 224, 224);
-        }
       }
     }
+  }
+}
+
+.main-logo {
+  display: flex;
+  height: 60px;
+  border-bottom: b.$primary-border;
+  margin: 0 auto;
+  img {
+    align-self: center;
+    display: block;
+    height: 40px;
+    padding-right: 5px;
   }
 }

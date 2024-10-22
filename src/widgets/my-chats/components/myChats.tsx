@@ -48,7 +48,12 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
                 className={`${chat.id == id && 'actual'}`}
                 onClick={() => navigate(`/messenger/${chat.id}`)}
               >
-                <span>{chat.Users[0].login}</span>
+                <div className="avatar"></div>
+                <div className="info">
+                  <h2>{chat.Users[0].login}</h2>
+                  <span>Hello! Happy birthday</span>
+                  <span className="time">20:45</span>
+                </div>
               </li>
             );
           })}
