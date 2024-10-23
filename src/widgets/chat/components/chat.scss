@@ -32,7 +32,7 @@ div.container-chat {
         margin: 0;
       }
       span {
-        font-size: 12px;
+        font-size: 14px;
         color: c.$easy-grey;
       }
     }
@@ -41,6 +41,14 @@ div.container-chat {
       height: 40px;
       border-radius: 50%;
       background-color: red;
+    }
+    & * {
+      display: none;
+    }
+    &.active {
+      * {
+        display: block;
+      }
     }
   }
   div.chat {

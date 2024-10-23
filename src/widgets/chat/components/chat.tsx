@@ -7,6 +7,8 @@ import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { scrollToBottom } from './scrollToBottom';
 import { WSTypes } from '../../../shared/types/WSTypes';
 import { Message } from '../../../entites/message';
+import { Partner } from '../types/partner';
+import { checkOnline } from '../models/checkOnline';
 
 interface Props {
   setLastChatId: (id: number) => void;
@@ -19,6 +21,8 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const user: any = useAppSelector((state) => state.user.user);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(id);
+  const [partner, setPartner] = useState<Partner | null>(null);
+  const [usersOnline, setUsersOnline] = useState<null | any[]>(null);
 
   useEffect(() => {
     let chatId = id;
@@ -36,6 +40,10 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
                   ...payload.messages,
                 ]);
               }
+              setPartner((partner: any) => ({
+                ...partner,
+                login: payload.partnerLogin,
+              }));
               break;
             case WSTypes.AddMessage:
               if (payload.chatId == idRef.current) {
@@ -45,6 +53,9 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
                 ]);
               }
               setLastChatId(payload.chatId);
+              break;
+            case 'getOnlineUsers':
+              setUsersOnline(payload);
               break;
           }
         },
@@ -66,11 +77,17 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
 
   return (
     <div className="container-chat">
-      <div className="partner-info">
+      <div className={`${partner ? 'active' : ''} partner-info`}>
         <div className="avatar"></div>
         <div className="info">
-          <h2>Partner login</h2>
-          <span>last seen recently</span>
+          <h2>{partner?.login}</h2>
+          <span
+            className={`${checkOnline(usersOnline as any, partner?.login as any) ? 'online' : ''}`}
+          >
+            {checkOnline(usersOnline as any, partner?.login as any)
+              ? 'online'
+              : 'offline'}
+          </span>
         </div>
       </div>
       <div className="chat">

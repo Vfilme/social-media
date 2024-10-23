@@ -1,5 +1,5 @@
 import React from 'react';
-import './chat.scss';
+import './chatItem.scss';
 
 interface Props {
   login: string;
@@ -7,7 +7,7 @@ interface Props {
   time: string;
 }
 
-export const Chat: React.FC<Props> = ({ login, message, time }) => {
+export const ChatItem: React.FC<Props> = ({ login, message, time }) => {
   return (
     <>
       <div className="avatar"></div>
