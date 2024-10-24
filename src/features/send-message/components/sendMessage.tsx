@@ -4,11 +4,8 @@ import { useParams } from 'react-router-dom';
 import './sendMessage.scss';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 
-interface Props {
-  socket: WebSocket | null;
-}
-
-export const SendMessage: React.FC<Props> = ({ socket }) => {
+export const SendMessage: React.FC = () => {
+  const socket = useAppSelector((state) => state.websocket.socket);
   const { id } = useParams(); // chat id
   const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);

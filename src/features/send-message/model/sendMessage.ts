@@ -8,10 +8,8 @@ export const sendMessage = (
 ) => {
   if (userLogin && !isNaN(Number(chatId)) && socket && message !== '') {
     const data = JSON.stringify({
-      type: WSTypes.AddMessage,
-      userLogin,
-      chatId,
-      content: message,
+      action: WSTypes.AddMessage,
+      payload: { userLogin, chatId, content: message },
     });
     socket.send(data);
   }

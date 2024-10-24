@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './chat.scss';
-import { webSocket } from '../api/webSocket';
 import { SendMessage } from '../../../features/send-message/components/sendMessage';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { scrollToBottom } from './scrollToBottom';
@@ -16,55 +15,59 @@ interface Props {
 
 export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const { id } = useParams<{ id: string | undefined }>();
-  const [socket, setSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<any[] | []>([]);
   const user: any = useAppSelector((state) => state.user.user);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(id);
   const [partner, setPartner] = useState<Partner | null>(null);
-  const [usersOnline, setUsersOnline] = useState<null | any[]>(null);
+  const [onlineUsers, setOnlineUsers] = useState<null | any[]>(null);
+  const message = useAppSelector((state) => state.websocket.message);
+  const socket: any = useAppSelector((state) => state.websocket.socket);
 
   useEffect(() => {
-    let chatId = id;
-    if (user) {
-      webSocket(
-        user.login,
-        chatId,
-        (message) => {
-          const { payload, action } = message;
-          switch (action) {
-            case WSTypes.GetMessages:
-              if (payload.chatId == idRef.current) {
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  ...payload.messages,
-                ]);
-              }
-              setPartner((partner: any) => ({
-                ...partner,
-                login: payload.partnerLogin,
-              }));
-              break;
-            case WSTypes.AddMessage:
-              if (payload.chatId == idRef.current) {
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  payload.message,
-                ]);
-              }
-              setLastChatId(payload.chatId);
-              break;
-            case 'getOnlineUsers':
-              setUsersOnline(payload);
-              break;
+    if (message) {
+      const { payload, action } = message;
+      switch (action) {
+        case WSTypes.GetMessages:
+          if ((payload as any).chatId == idRef.current) {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              ...(payload as any).messages,
+            ]);
           }
-        },
-        (ws) => {
-          setSocket(ws);
-        }
-      );
+          setPartner((partner: any) => ({
+            ...partner,
+            login: (payload as any).partnerLogin,
+          }));
+          break;
+        case WSTypes.AddMessage:
+          if ((payload as any).chatId == idRef.current) {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              (payload as any).message,
+            ]);
+          }
+          setLastChatId((payload as any).chatId);
+          break;
+        case WSTypes.GetOnlineUsers:
+          setOnlineUsers(payload);
+          break;
+      }
     }
-  }, [user, id]);
+  }, [message]);
+
+  useEffect(() => {
+    if (user?.login && !isNaN(Number(id)) && socket) {
+      const data = JSON.stringify({
+        action: WSTypes.GetMessages,
+        payload: { chatId: id, userLogin: user.login },
+      });
+      if (socket.readyState === WebSocket.OPEN) socket.send(data);
+      else if (socket.readyState === WebSocket.CONNECTING) {
+        socket.addEventListener('open', () => socket.send(data));
+      }
+    }
+  }, [id, user]);
 
   useEffect(() => {
     setMessages([]);
@@ -82,9 +85,9 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
         <div className="info">
           <h2>{partner?.login}</h2>
           <span
-            className={`${checkOnline(usersOnline as any, partner?.login as any) ? 'online' : ''}`}
+            className={`${checkOnline(onlineUsers as any, partner?.login as any) ? 'online' : ''}`}
           >
-            {checkOnline(usersOnline as any, partner?.login as any)
+            {checkOnline(onlineUsers as any, partner?.login as any)
               ? 'online'
               : 'offline'}
           </span>
@@ -101,7 +104,7 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
         </div>
       </div>
       <div className="container-send-message">
-        <SendMessage socket={socket} />
+        <SendMessage />
       </div>
     </div>
   );
