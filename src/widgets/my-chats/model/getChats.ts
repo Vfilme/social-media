@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { URL } from '../../../shared/const/urls';
 
-export const getUsers = async () => {
+export const getChats = async () => {
   try {
     const response = await axios.get(`${URL.BAZE}/chat/chats`, {
       withCredentials: true,

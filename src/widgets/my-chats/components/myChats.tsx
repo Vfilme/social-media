@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import './myChats.scss';
-import { getUsers } from '../model/getUsers';
+import { getChats } from '../model/getChats';
 import { useEffect, useState } from 'react';
 import React = require('react');
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import { updateChats } from '../model/updateChats';
 import { sortChats } from '../model/sortChats';
 import { ChatItem } from '../../../entites/chat-item';
+import { WSTypes } from '../../../shared/types/WSTypes';
 
 interface Props {
   lastChatId: number;
@@ -17,6 +18,7 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
   const [chats, setChats] = useState<any[] | null | any>(null);
   const user: any = useAppSelector((state) => state.user.user);
   const navigate = useNavigate();
+  const message = useAppSelector((state) => state.websocket.message);
 
   useEffect(() => {
     if (chats && lastChatId) {
@@ -26,18 +28,26 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
     }
   }, [lastChatId]);
 
+  const setMyChats = async () => {
+    try {
+      const chatsWithPartner = await getChats();
+      setChats(chatsWithPartner);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (user) {
-      (async () => {
-        try {
-          const chatsWithPartner = await getUsers();
-          setChats(chatsWithPartner);
-        } catch (error) {
-          console.log(error);
-        }
-      })();
+      setMyChats();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (message && user && (message as any).action == WSTypes.AddMessage) {
+      setMyChats();
+    }
+  }, [message]);
 
   return (
     <div className="my-chats">
