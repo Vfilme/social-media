@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
-import { getTime } from '../model/getTime';
 import './message.scss';
+import { getTime } from '../../../shared/lib/getTime';
 
 interface Props {
   message: {

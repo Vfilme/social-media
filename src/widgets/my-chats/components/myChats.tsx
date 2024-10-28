@@ -8,6 +8,7 @@ import { updateChats } from '../model/updateChats';
 import { sortChats } from '../model/sortChats';
 import { ChatItem } from '../../../entites/chat-item';
 import { WSTypes } from '../../../shared/types/WSTypes';
+import { getTime } from '../../../shared/lib/getTime';
 
 interface Props {
   lastChatId: number;
@@ -54,18 +55,19 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
       {chats && (
         <ul>
           {chats.map((chat: any) => {
-            return (
-              <li
-                className={`${chat.id == id && 'actual'}`}
-                onClick={() => navigate(`/messenger/${chat.id}`)}
-              >
-                <ChatItem
-                  login={chat.Users[0].login}
-                  message="Hello, happy birthday!" //mock data
-                  time={'20:45'} //moсk data
-                />
-              </li>
-            );
+            if (chat.Messages.length > 0)
+              return (
+                <li
+                  className={`${chat.id == id && 'actual'}`}
+                  onClick={() => navigate(`/messenger/${chat.id}`)}
+                >
+                  <ChatItem
+                    login={chat.Users[0].login}
+                    message={chat.Messages[0].content}
+                    time={getTime(chat.updated_at)}
+                  />
+                </li>
+              );
           })}
         </ul>
       )}
