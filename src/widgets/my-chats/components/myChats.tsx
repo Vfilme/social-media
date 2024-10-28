@@ -51,9 +51,9 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
   }, [message]);
 
   return (
-    <div className="my-chats">
+    <div className="container-my-chats">
       {chats && (
-        <ul>
+        <ul className="my-chats">
           {chats.map((chat: any) => {
             if (chat.Messages.length > 0)
               return (

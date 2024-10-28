@@ -1,7 +1,7 @@
 @use '../../../shared/const/borders.scss' as b;
 @use '../../../shared/const/colors.scss' as c;
 
-div.my-chats {
+div.container-my-chats {
   max-width: 380px;
   margin-top: 60px;
   border: b.$primary-border;
@@ -9,10 +9,30 @@ div.my-chats {
   max-width: 380px;
   width: 100%;
   box-sizing: border-box;
+  padding-right: 1px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 60px);
+  ::-webkit-scrollbar {
+    background-color: c.$scrollbar-hard-grey;
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: c.$scrollbar-easy-grey;
+    border-radius: 5px;
+  }
+
   ul {
     padding: 0;
     margin: 0;
     list-style: none;
+    flex: 1;
+    overflow-y: auto;
     li {
       display: flex;
       align-items: center;
