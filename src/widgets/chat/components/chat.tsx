@@ -42,11 +42,22 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
           break;
         case WSTypes.AddMessage:
           if ((payload as any).chatId == idRef.current) {
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              (payload as any).message,
-            ]);
+            if (user.login != (payload as any).message.User.login) {
+              setMessages((prevMessages) => [
+                ...prevMessages,
+                (payload as any).message,
+              ]);
+            } else {
+              const newMessages = [...messages].map((m) => {
+                if (!m?.id) {
+                  m = (payload as any).message;
+                }
+                return m;
+              });
+              setMessages(newMessages);
+            }
           }
+
           setLastChatId((payload as any).chatId);
           break;
         case WSTypes.GetOnlineUsers:
@@ -78,6 +89,17 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
     scrollToBottom(messagesEndRef);
   }, [messages]);
 
+  const addMessage = (content: string) => {
+    const newMessage = {
+      User: { login: user.login },
+      user_id: user.id,
+      content,
+      sent_at: new Date(),
+      chatId: id,
+    };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
   return (
     <div className="container-chat">
       <div className={`${partner ? 'active' : ''} partner-info`}>
@@ -104,7 +126,9 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
         </div>
       </div>
       <div className="container-send-message">
-        <SendMessage />
+        <SendMessage
+          addMessage={(contentMessage: string) => addMessage(contentMessage)}
+        />
       </div>
     </div>
   );

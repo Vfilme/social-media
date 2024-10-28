@@ -4,7 +4,11 @@ import { useParams } from 'react-router-dom';
 import './sendMessage.scss';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 
-export const SendMessage: React.FC = () => {
+interface Props {
+  addMessage: (message: string) => void;
+}
+
+export const SendMessage: React.FC<Props> = ({ addMessage }) => {
   const socket = useAppSelector((state) => state.websocket.socket);
   const { id } = useParams(); // chat id
   const [message, setMessage] = useState('');
@@ -14,6 +18,7 @@ export const SendMessage: React.FC = () => {
   const writeMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     sendMessage(user.login, id, socket, message);
+    addMessage(message);
     setMessage('');
   };
 

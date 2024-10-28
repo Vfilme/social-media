@@ -20,6 +20,14 @@ export const Message: React.FC<Props> = ({ message }) => {
       <div className="message-content">
         {message.content}
         <span className="data">{getTime(message.sent_at)}</span>
+        {(message as any)?.id ? (
+          ''
+        ) : (
+          <svg className="progress-ring" width="20" height="20">
+            <circle className="ring-circle" cx="10" cy="10" r="5" />
+            <circle className="ring-slider" cx="10" cy="10" r="1.5" />
+          </svg>
+        )}
       </div>
     </div>
   );
