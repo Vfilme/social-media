@@ -47,6 +47,11 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
                 ...prevMessages,
                 (payload as any).message,
               ]);
+              const message = JSON.stringify({
+                payload: { userLogin: user.login, chatId: id },
+                action: WSTypes.UpdateStatusMessage,
+              });
+              socket.send(message);
             } else {
               const newMessages = [...messages].map((m) => {
                 if (!m?.id) {
@@ -62,6 +67,15 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
           break;
         case WSTypes.GetOnlineUsers:
           setOnlineUsers(payload);
+          break;
+        case WSTypes.UpdateStatusMessage:
+          const newMEssages = [...messages].map((message) => {
+            if (message.User.login == user.login) {
+              message = { ...message, status: 'read' };
+            }
+            return message;
+          });
+          setMessages(newMEssages);
           break;
       }
     }
@@ -95,6 +109,7 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
       user_id: user.id,
       content,
       sent_at: new Date(),
+      status: 'sending',
       chatId: id,
     };
     setMessages((prevMessages) => [...prevMessages, newMessage]);

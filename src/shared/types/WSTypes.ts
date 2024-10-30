@@ -3,4 +3,5 @@ export enum WSTypes {
   GetMessages = 'getMessages',
   AddMessage = 'addMessage',
   GetOnlineUsers = 'getOnlineUsers',
+  UpdateStatusMessage = 'updateStatusMessage',
 }

@@ -1,0 +1,26 @@
+@use '../../const/colors.scss' as c;
+
+svg {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  fill: none;
+  circle {
+    &.ring-circle {
+      stroke-width: 2.5;
+      stroke: c.$easy-grey;
+      fill: none;
+    }
+    &.ring-slider {
+      fill: c.$hard-grey;
+      transform-origin: 10px 10px;
+      animation: slide 1s linear infinite;
+    }
+  }
+  path {
+    stroke: c.$easy-grey;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
