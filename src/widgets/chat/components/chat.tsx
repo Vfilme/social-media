@@ -175,9 +175,11 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
         </div>
       </div>
       <div className="container-send-message">
-        <SendMessage
-          addMessage={(contentMessage: string) => addMessage(contentMessage)}
-        />
+        {dateWithMessages.length != 0 && (
+          <SendMessage
+            addMessage={(contentMessage: string) => addMessage(contentMessage)}
+          />
+        )}
       </div>
     </div>
   );
