@@ -57,6 +57,31 @@ div.container-chat {
     position: relative;
     width: 100%;
     flex-grow: 1;
+    div.anchor {
+      transition: transform 0.3s linear;
+      z-index: 2;
+      position: absolute;
+      right: calc(50% - 21px);
+      bottom: -42px;
+      padding: 10px;
+      border-radius: 50%;
+      border: 1px solid white;
+      background-color: black;
+      svg {
+        display: block;
+        width: 20px;
+        height: 20px;
+        path {
+          stroke: white;
+          stroke-width: 1;
+          stroke-linejoin: round;
+          stroke-linecap: round;
+        }
+      }
+      &.active {
+        transform: translateY(-62px);
+      }
+    }
     div.container-messages {
       box-sizing: border-box;
       margin: auto;
@@ -88,6 +113,8 @@ div.container-chat {
     }
   }
   div.container-send-message {
+    position: relative;
+    z-index: 3;
     margin: 20px;
     margin-top: 0;
   }

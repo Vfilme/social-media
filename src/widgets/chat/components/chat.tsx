@@ -24,6 +24,23 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const [onlineUsers, setOnlineUsers] = useState<null | any[]>(null);
   const message = useAppSelector((state) => state.websocket.message);
   const socket: any = useAppSelector((state) => state.websocket.socket);
+  const [anchor, setAnchor] = useState<boolean>(false);
+
+  const handleScrollChat = () => {
+    const { scrollTop, scrollHeight, clientHeight } = (messagesEndRef as any)
+      .current;
+    console.log(scrollTop, scrollHeight - clientHeight);
+    if (scrollHeight - clientHeight - scrollTop > 100) setAnchor(true);
+    else {
+      setAnchor(false);
+    }
+  };
+
+  useEffect(() => {
+    const container = messagesEndRef.current;
+    container?.addEventListener('scroll', handleScrollChat);
+    return () => container?.removeEventListener('scroll', handleScrollChat);
+  }, []);
 
   useEffect(() => {
     if (message) {
@@ -158,6 +175,20 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
         </div>
       </div>
       <div className="chat">
+        {partner && (
+          <div
+            className={`${anchor ? 'active' : ''} anchor`}
+            onClick={() => {
+              scrollToBottom(messagesEndRef, 'smooth');
+            }}
+          >
+            <svg>
+              <path d="M10 1L10 18"></path>
+              <path d="M2 12L10 19"></path>
+              <path d="M18 12L10 19"></path>
+            </svg>
+          </div>
+        )}
         <div className="container-messages" ref={messagesEndRef}>
           <div className="messages">
             {dateWithMessages &&
@@ -175,7 +206,7 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
         </div>
       </div>
       <div className="container-send-message">
-        {dateWithMessages.length != 0 && (
+        {partner && (
           <SendMessage
             addMessage={(contentMessage: string) => addMessage(contentMessage)}
           />
