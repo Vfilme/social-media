@@ -10,9 +10,10 @@ export const StatusMessageIcon: React.FC<Props> = ({ status }) => {
   switch (status) {
     case StatusIcons.Sending:
       return (
-        <svg>
-          <circle className="ring-circle" cx="10" cy="10" r="5" />
-          <circle className="ring-slider" cx="10" cy="10" r="1.5" />
+        <svg className="sending">
+          <circle cx="10" cy="10" r="5" />
+          <path className="big" d="M10 10L 10 7"></path>
+          <path className="small" d="M10 10L 10 8"></path>
         </svg>
       );
     case StatusIcons.Sent:

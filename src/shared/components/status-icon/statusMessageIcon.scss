@@ -1,26 +1,40 @@
 @use '../../const/colors.scss' as c;
 
+@keyframes clockRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 svg {
   width: 20px;
   height: 20px;
   position: relative;
   fill: none;
   circle {
-    &.ring-circle {
-      stroke-width: 2.5;
-      stroke: c.$easy-grey;
-      fill: none;
-    }
-    &.ring-slider {
-      fill: c.$hard-grey;
-      transform-origin: 10px 10px;
-      animation: slide 1s linear infinite;
-    }
+    stroke-width: 1;
+    stroke: c.$easy-grey;
+    fill: none;
   }
   path {
     stroke: c.$easy-grey;
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
+  }
+  &.sending {
+    path {
+      stroke-width: 1;
+      transform-origin: 50% 50%;
+      &.small {
+        animation: clockRotate 2s linear infinite;
+      }
+      &.big {
+        animation: clockRotate 1.5s linear infinite;
+      }
+    }
   }
 }
