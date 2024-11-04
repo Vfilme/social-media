@@ -1,4 +1,4 @@
-export const getTime = (dateString: string): string => {
+export const getTimeFromDate = (dateString: string): string => {
   const date = new Date(dateString);
 
   let wrongHours = date.getHours();

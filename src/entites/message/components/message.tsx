@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
 import './message.scss';
-import { getTime } from '../../../shared/lib/getTime';
+import { getTimeFromDate } from '../../../shared/lib/getTimeFromDate';
 import { StatusMessageIcon } from '../../../shared/components';
 
 interface Props {
@@ -21,7 +21,7 @@ export const Message: React.FC<Props> = ({ message }) => {
     >
       <div className="message-content">
         {message.content}
-        <span className="data">{getTime(message.sent_at)}</span>
+        <span className="message-time">{getTimeFromDate(message.sent_at)}</span>
         {user.login == message.User.login ? (
           <StatusMessageIcon status={(message as any).status} />
         ) : (

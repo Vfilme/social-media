@@ -8,6 +8,7 @@ import { WSTypes } from '../../../shared/types/WSTypes';
 import { Message } from '../../../entites/message';
 import { Partner } from '../types/partner';
 import { checkOnline } from '../models/checkOnline';
+import { getDayWithMonthFromDate } from '../../../shared/lib/getDayWithMonthFromDate';
 
 interface Props {
   setLastChatId: (id: number) => void;
@@ -15,7 +16,7 @@ interface Props {
 
 export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const { id } = useParams<{ id: string | undefined }>();
-  const [messages, setMessages] = useState<any[] | []>([]);
+  const [dateWithMessages, setDateWithMessages] = useState<[] | any[]>([]);
   const user: any = useAppSelector((state) => state.user.user);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(id);
@@ -28,55 +29,74 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
     if (message) {
       const { payload, action } = message;
       switch (action) {
-        case WSTypes.GetMessages:
+        case WSTypes.GetMessages: {
+          const { dateWithMessages, partnerLogin } = payload;
           if ((payload as any).chatId == idRef.current) {
-            setMessages((prevMessages) => [
+            setDateWithMessages((prevMessages) => [
               ...prevMessages,
-              ...(payload as any).messages,
+              ...dateWithMessages,
             ]);
           }
           setPartner((partner: any) => ({
             ...partner,
-            login: (payload as any).partnerLogin,
+            login: partnerLogin,
           }));
           break;
-        case WSTypes.AddMessage:
-          if ((payload as any).chatId == idRef.current) {
-            if (user.login != (payload as any).message.User.login) {
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                (payload as any).message,
-              ]);
-              const message = JSON.stringify({
+        }
+        case WSTypes.AddMessage: {
+          const { chatId } = payload;
+          if (chatId == idRef.current) {
+            const [date, message] = (payload as any).dateWithMessage;
+            if (user.login != message.User.login) {
+              const objDateWithMessages = Object.fromEntries(dateWithMessages);
+              objDateWithMessages[date] = [
+                ...(objDateWithMessages[date] || []),
+                message,
+              ];
+              const newDateWithMessages = Object.entries(objDateWithMessages);
+              setDateWithMessages(newDateWithMessages);
+              const data = JSON.stringify({
                 payload: { userLogin: user.login, chatId: id },
                 action: WSTypes.UpdateStatusMessage,
               });
-              socket.send(message);
+              socket.send(data);
             } else {
-              const newMessages = [...messages].map((m) => {
-                if (!m?.id) {
-                  m = (payload as any).message;
+              const objDateWithMessages = Object.fromEntries(dateWithMessages);
+              objDateWithMessages[date] = objDateWithMessages[date].map(
+                (m: any) => {
+                  if (!m?.id) m = message;
+                  return m;
                 }
-                return m;
-              });
-              setMessages(newMessages);
+              );
+              const newDateWithMessages = Object.entries(objDateWithMessages);
+              setDateWithMessages(newDateWithMessages);
             }
           }
 
-          setLastChatId((payload as any).chatId);
+          setLastChatId(chatId);
           break;
-        case WSTypes.GetOnlineUsers:
+        }
+        case WSTypes.GetOnlineUsers: {
           setOnlineUsers(payload);
           break;
-        case WSTypes.UpdateStatusMessage:
-          const newMEssages = [...messages].map((message) => {
-            if (message.User.login == user.login) {
-              message = { ...message, status: 'read' };
+        }
+        case WSTypes.UpdateStatusMessage: {
+          const newDateWithMessages = [...dateWithMessages].map(
+            ([_, message]) => {
+              return [
+                _,
+                message.map((m: any) => {
+                  if (m.User.login == user.login) {
+                    m = { ...m, status: 'read' };
+                  }
+                  return m;
+                }),
+              ];
             }
-            return message;
-          });
-          setMessages(newMEssages);
+          );
+          setDateWithMessages(newDateWithMessages);
           break;
+        }
       }
     }
   }, [message]);
@@ -95,24 +115,31 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   }, [id, user]);
 
   useEffect(() => {
-    setMessages([]);
+    setDateWithMessages([]);
     idRef.current = id;
   }, [id]);
 
   useEffect(() => {
     scrollToBottom(messagesEndRef);
-  }, [messages]);
+  }, [dateWithMessages]);
 
   const addMessage = (content: string) => {
     const newMessage = {
       User: { login: user.login },
-      user_id: user.id,
       content,
       sent_at: new Date(),
       status: 'sending',
       chatId: id,
     };
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    const objDateWithMessages = Object.fromEntries(dateWithMessages);
+    const dayMonth = getDayWithMonthFromDate(newMessage.sent_at);
+
+    objDateWithMessages[dayMonth] = [
+      ...(objDateWithMessages[dayMonth] || []),
+      newMessage,
+    ];
+    const newDateWithMessages = objDateWithMessages;
+    setDateWithMessages(Object.entries(newDateWithMessages));
   };
 
   return (
@@ -133,9 +160,16 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
       <div className="chat">
         <div className="container-messages" ref={messagesEndRef}>
           <div className="messages">
-            {messages &&
-              messages.map((m) => {
-                return <Message message={m} />;
+            {dateWithMessages &&
+              dateWithMessages.map(([date, messages]) => {
+                return (
+                  <div className="time-zone">
+                    <span className="date">{date}</span>
+                    {messages.map((m: any) => {
+                      return <Message message={m} />;
+                    })}
+                  </div>
+                );
               })}
           </div>
         </div>

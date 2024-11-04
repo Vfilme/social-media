@@ -8,7 +8,7 @@ import { updateChats } from '../model/updateChats';
 import { sortChats } from '../model/sortChats';
 import { ChatItem } from '../../../entites/chat-item';
 import { WSTypes } from '../../../shared/types/WSTypes';
-import { getTime } from '../../../shared/lib/getTime';
+import { getTimeFromDate } from '../../../shared/lib/getTimeFromDate';
 
 interface Props {
   lastChatId: number;
@@ -64,7 +64,7 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
                   <ChatItem
                     login={chat.Users[0].login}
                     message={chat.Messages[0].content}
-                    time={getTime(chat.updated_at)}
+                    time={getTimeFromDate(chat.updated_at)}
                   />
                 </li>
               );
