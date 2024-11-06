@@ -8,7 +8,7 @@ import { WSTypes } from '../../../shared/types/WSTypes';
 import { Message } from '../../../entites/message';
 import { Partner } from '../types/partner';
 import { checkOnline } from '../models/checkOnline';
-import { getDayWithMonthFromDate } from '../../../shared/lib/getDayWithMonthFromDate';
+import { getSuitableDate } from '../../../shared/lib/get-suitable-date/getSuitableDate';
 
 interface Props {
   setLastChatId: (id: number) => void;
@@ -29,7 +29,6 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const handleScrollChat = () => {
     const { scrollTop, scrollHeight, clientHeight } = (messagesEndRef as any)
       .current;
-    console.log(scrollTop, scrollHeight - clientHeight);
     if (scrollHeight - clientHeight - scrollTop > 100) setAnchor(true);
     else {
       setAnchor(false);
@@ -149,14 +148,18 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
       chatId: id,
     };
     const objDateWithMessages = Object.fromEntries(dateWithMessages);
-    const dayMonth = getDayWithMonthFromDate(newMessage.sent_at);
+    const currentDate = new Date().toLocaleDateString();
 
-    objDateWithMessages[dayMonth] = [
-      ...(objDateWithMessages[dayMonth] || []),
+    objDateWithMessages[currentDate] = [
+      ...(objDateWithMessages[currentDate] || []),
       newMessage,
     ];
     const newDateWithMessages = objDateWithMessages;
     setDateWithMessages(Object.entries(newDateWithMessages));
+  };
+
+  const changeDateFromEuropeanToGregorian = (date: string) => {
+    return date.split('.').map(Number).reverse().join(',');
   };
 
   return (
@@ -195,7 +198,9 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
               dateWithMessages.map(([date, messages]) => {
                 return (
                   <div className="time-zone">
-                    <span className="date">{date}</span>
+                    <span className="date">
+                      {getSuitableDate(changeDateFromEuropeanToGregorian(date))}
+                    </span>
                     {messages.map((m: any) => {
                       return <Message message={m} />;
                     })}

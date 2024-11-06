@@ -9,6 +9,7 @@ import { sortChats } from '../model/sortChats';
 import { ChatItem } from '../../../entites/chat-item';
 import { WSTypes } from '../../../shared/types/WSTypes';
 import { getTimeFromDate } from '../../../shared/lib/getTimeFromDate';
+import { getSuitableDate } from '../../../shared/lib/get-suitable-date/getSuitableDate';
 
 interface Props {
   lastChatId: number;
@@ -50,6 +51,12 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
     }
   }, [message]);
 
+  const getAppropriateDate = (date: string) => {
+    return getSuitableDate(date) == 'today'
+      ? getTimeFromDate(date)
+      : getSuitableDate(date);
+  };
+
   return (
     <div className="container-my-chats">
       {chats && (
@@ -64,7 +71,7 @@ export const MyChats: React.FC<Props> = ({ lastChatId }) => {
                   <ChatItem
                     login={chat.Users[0].login}
                     message={chat.Messages[0].content}
-                    time={getTimeFromDate(chat.updated_at)}
+                    date={getAppropriateDate(chat.updated_at)}
                   />
                 </li>
               );
