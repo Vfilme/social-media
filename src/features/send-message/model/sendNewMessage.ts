@@ -1,6 +1,6 @@
 import { WSTypes } from '../../../shared/types/WSTypes';
 
-export const sendMessage = (
+export const sendNewMessage = (
   userLogin: string,
   chatId: string | undefined,
   socket: WebSocket | null,

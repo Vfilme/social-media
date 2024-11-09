@@ -9,6 +9,8 @@ import { Message } from '../../../entites/message';
 import { Partner } from '../types/partner';
 import { checkOnline } from '../models/checkOnline';
 import { getSuitableDate } from '../../../shared/lib/get-suitable-date/getSuitableDate';
+import { deleteMessage } from '../models/deleteMessage';
+import { changeDateFromEuropeanToGregorian } from '../../../shared/lib/changeDateFromEuropeanToGregorian';
 
 interface Props {
   setLastChatId: (id: number) => void;
@@ -25,6 +27,14 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
   const message = useAppSelector((state) => state.websocket.message);
   const socket: any = useAppSelector((state) => state.websocket.socket);
   const [anchor, setAnchor] = useState<boolean>(false);
+  const [positionMessageInterface, setPositionMessageInterface] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [isActiveMessageInterface, setActiveMessageInterface] =
+    useState<boolean>(false);
+  const [editableMessage, setEditableMessage] = useState<string | null>(null);
+  const [activeMessage, setActiveMessage] = useState<any>(null);
 
   const handleScrollChat = () => {
     const { scrollTop, scrollHeight, clientHeight } = (messagesEndRef as any)
@@ -80,10 +90,14 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
               const objDateWithMessages = Object.fromEntries(dateWithMessages);
               objDateWithMessages[date] = objDateWithMessages[date].map(
                 (m: any) => {
-                  if (!m?.id) m = message;
+                  console.log(m?.id);
+                  if (!m?.id) {
+                    m = { ...message, status: message.status, id: message.id };
+                  }
                   return m;
                 }
               );
+              console.log('MESSAGES: ', objDateWithMessages);
               const newDateWithMessages = Object.entries(objDateWithMessages);
               setDateWithMessages(newDateWithMessages);
             }
@@ -112,6 +126,33 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
           );
           setDateWithMessages(newDateWithMessages);
           break;
+        }
+        case 'deleteMessage': {
+          const { id } = payload;
+          setDateWithMessages((prevDateWithMessages) =>
+            prevDateWithMessages.map(([_, messages]) => {
+              return [
+                _,
+                messages.filter((m: any) => {
+                  return m.id != id;
+                }),
+              ];
+            })
+          );
+        }
+        case 'editMessage': {
+          const editMessage: any = payload;
+          setDateWithMessages((prevDateWithMessages) =>
+            prevDateWithMessages.map(([_, messages]) => {
+              return [
+                _,
+                messages.map((m: any) => {
+                  if (m.id == (editMessage as any)?.id) m = { ...editMessage };
+                  return m;
+                }),
+              ];
+            })
+          );
         }
       }
     }
@@ -158,8 +199,13 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
     setDateWithMessages(Object.entries(newDateWithMessages));
   };
 
-  const changeDateFromEuropeanToGregorian = (date: string) => {
-    return date.split('.').map(Number).reverse().join(',');
+  const handleRigthClick = (event: any, message: any) => {
+    event.preventDefault();
+    if (message?.User.login == user.login) {
+      setActiveMessageInterface(true);
+      setActiveMessage(message);
+      setPositionMessageInterface({ x: event.clientX, y: event.clientY });
+    }
   };
 
   return (
@@ -176,6 +222,24 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
               : 'offline'}
           </span>
         </div>
+      </div>
+      <div
+        className={`interface-message ${isActiveMessageInterface ? '' : 'hide'}`}
+        onMouseLeave={() => setActiveMessageInterface(false)}
+        onClick={() => setActiveMessageInterface(false)}
+        style={{
+          left: `${positionMessageInterface.x}px`,
+          top: `${positionMessageInterface.y}px`,
+        }}
+      >
+        <ul>
+          <li onClick={() => deleteMessage(activeMessage.id, id, socket)}>
+            удалить
+          </li>
+          <li onClick={() => setEditableMessage(activeMessage)}>
+            редактировать
+          </li>
+        </ul>
       </div>
       <div className="chat">
         {partner && (
@@ -202,7 +266,9 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
                       {getSuitableDate(changeDateFromEuropeanToGregorian(date))}
                     </span>
                     {messages.map((m: any) => {
-                      return <Message message={m} />;
+                      return (
+                        <Message message={m} onRigthClick={handleRigthClick} />
+                      );
                     })}
                   </div>
                 );
@@ -213,7 +279,11 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
       <div className="container-send-message">
         {partner && (
           <SendMessage
+            editableMessage={editableMessage}
             addMessage={(contentMessage: string) => addMessage(contentMessage)}
+            removeEditMode={() => {
+              setEditableMessage(null);
+            }}
           />
         )}
       </div>
