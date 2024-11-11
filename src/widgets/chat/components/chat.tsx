@@ -11,6 +11,9 @@ import { checkOnline } from '../models/checkOnline';
 import { getSuitableDate } from '../../../shared/lib/get-suitable-date/getSuitableDate';
 import { deleteMessage } from '../models/deleteMessage';
 import { changeDateFromEuropeanToGregorian } from '../../../shared/lib/changeDateFromEuropeanToGregorian';
+import { getDayMonthYearWithMyTimeZone } from '../models/getDayMonthYearWithMyTimeZone';
+import { getGropedMessagesByDate } from '../models/getGroupedMessagesByDate';
+import { getUpdatedMessagesWithActualLastMessage } from '../models/updateLastMessageWithStatusSending';
 
 interface Props {
   setLastChatId: (id: number) => void;
@@ -56,13 +59,14 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
       const { payload, action } = message;
       switch (action) {
         case WSTypes.GetMessages: {
-          const { dateWithMessages, partnerLogin } = payload;
+          const { messages, partnerLogin } = payload;
+
+          const dateWithMessages = getGropedMessagesByDate(messages);
+
           if ((payload as any).chatId == idRef.current) {
-            setDateWithMessages((prevMessages) => [
-              ...prevMessages,
-              ...dateWithMessages,
-            ]);
+            setDateWithMessages(() => [...dateWithMessages]);
           }
+
           setPartner((partner: any) => ({
             ...partner,
             login: partnerLogin,
@@ -70,13 +74,15 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
           break;
         }
         case WSTypes.AddMessage: {
-          const { chatId } = payload;
+          const { message, chatId }: any = payload;
           if (chatId == idRef.current) {
-            const [date, message] = (payload as any).dateWithMessage;
             if (user.login != message.User.login) {
+              const dayMonthYearMessage = getDayMonthYearWithMyTimeZone(
+                message.sent_at
+              );
               const objDateWithMessages = Object.fromEntries(dateWithMessages);
-              objDateWithMessages[date] = [
-                ...(objDateWithMessages[date] || []),
+              objDateWithMessages[dayMonthYearMessage] = [
+                ...(objDateWithMessages[dayMonthYearMessage] || []),
                 message,
               ];
               const newDateWithMessages = Object.entries(objDateWithMessages);
@@ -87,19 +93,11 @@ export const Chat: React.FC<Props> = ({ setLastChatId }) => {
               });
               socket.send(data);
             } else {
-              const objDateWithMessages = Object.fromEntries(dateWithMessages);
-              objDateWithMessages[date] = objDateWithMessages[date].map(
-                (m: any) => {
-                  console.log(m?.id);
-                  if (!m?.id) {
-                    m = { ...message, status: message.status, id: message.id };
-                  }
-                  return m;
-                }
+              const updatedMessages = getUpdatedMessagesWithActualLastMessage(
+                dateWithMessages,
+                message
               );
-              console.log('MESSAGES: ', objDateWithMessages);
-              const newDateWithMessages = Object.entries(objDateWithMessages);
-              setDateWithMessages(newDateWithMessages);
+              setDateWithMessages(updatedMessages);
             }
           }
 
