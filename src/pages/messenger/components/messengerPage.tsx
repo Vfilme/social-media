@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './messangerPage.scss';
-import { Chat } from '../../../widgets/chat/components/chat';
+import { Chat } from '../../../widgets/chat/chat';
 import { MyChats } from '../../../widgets/my-chats';
 
 export const MessengerPage: React.FC = () => {

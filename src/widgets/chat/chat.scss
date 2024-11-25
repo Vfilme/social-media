@@ -1,0 +1,67 @@
+@use '../../shared/const/borders.scss' as b;
+@use '../../shared/const/colors.scss' as c;
+
+div.container-chat {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  ::-webkit-scrollbar {
+    background-color: c.$scrollbar-hard-grey;
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: c.$scrollbar-easy-grey;
+    border-radius: 5px;
+  }
+  div.container-message-menu.hide {
+    display: none;
+  }
+  div.chat {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    flex-grow: 1;
+    div.container-messages {
+      box-sizing: border-box;
+      margin: auto;
+      overflow-y: scroll;
+      position: absolute;
+      top: 0;
+      bottom: 0px;
+      right: 0;
+      left: 0;
+      div.messages {
+        div.time-zone {
+          padding: 20px;
+          display: grid;
+          gap: 10px;
+          span.date {
+            z-index: 1;
+            background-color: black;
+            position: sticky;
+            top: 20px;
+            color: c.$easy-grey;
+            font-size: 12px;
+            border: 1px solid c.$easy-grey;
+            justify-self: center;
+            padding: 5px;
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+  div.container-send-message {
+    position: relative;
+    z-index: 3;
+    margin: 20px;
+    margin-top: 0;
+  }
+}

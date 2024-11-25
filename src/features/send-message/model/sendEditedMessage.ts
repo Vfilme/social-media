@@ -1,4 +1,4 @@
-import { WSTypes } from '../../../shared/types/WSTypes';
+import { WSActionsTypes } from '../../../shared/types/WSActionsTypes';
 
 export const sendEditedMessage = (
   editableMessage: any,
@@ -9,7 +9,7 @@ export const sendEditedMessage = (
   const newMessage = { ...editableMessage, content: newContent };
   const data = JSON.stringify({
     payload: { message: newMessage, chatId },
-    action: WSTypes.EditMessage,
+    action: WSActionsTypes.EditMessage,
   });
   if (socket.readyState == 1) {
     socket.send(data);

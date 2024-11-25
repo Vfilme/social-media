@@ -1,0 +1,45 @@
+@use '../../shared/const/borders.scss' as b;
+@use '../../shared/const/colors.scss' as c;
+
+div.wrapper-my-chats {
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  width: 100%;
+  box-sizing: border-box;
+  ::-webkit-scrollbar {
+    background-color: c.$scrollbar-hard-grey;
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: c.$scrollbar-easy-grey;
+    border-radius: 5px;
+  }
+
+  ul.my-chats {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    li {
+      display: flex;
+      align-items: center;
+      height: 70px;
+      box-sizing: border-box;
+      padding: 8px;
+      transition: 0.1s;
+      position: relative;
+      &:hover {
+        background-color: c.$hard-grey;
+      }
+      &.actual {
+        background-color: c.$hard-grey;
+      }
+    }
+  }
+}

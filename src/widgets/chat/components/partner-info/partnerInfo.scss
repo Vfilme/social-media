@@ -1,0 +1,35 @@
+@use '../../../../shared/const/borders.scss' as b;
+@use '../../../../shared/const/colors.scss' as c;
+
+div.partner-info {
+  display: flex;
+  height: 60px;
+  border-bottom: b.$primary-border;
+  padding-left: 10px;
+  align-items: center;
+  .info {
+    margin-left: 10px;
+    h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+    span {
+      font-size: 14px;
+      color: c.$easy-grey;
+    }
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: red;
+  }
+  & * {
+    display: none;
+  }
+  &.active {
+    * {
+      display: block;
+    }
+  }
+}

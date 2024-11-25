@@ -1,4 +1,4 @@
-import { WSTypes } from '../../../shared/types/WSTypes';
+import { WSActionsTypes } from '../../../shared/types/WSActionsTypes';
 
 export const sendNewMessage = (
   userLogin: string,
@@ -8,8 +8,8 @@ export const sendNewMessage = (
 ) => {
   if (userLogin && !isNaN(Number(chatId)) && socket && message !== '') {
     const data = JSON.stringify({
-      action: WSTypes.AddMessage,
-      payload: { userLogin, chatId, content: message },
+      action: WSActionsTypes.AddMessage,
+      payload: { userLogin, chatId, content: message, messageType: 'text' },
     });
     socket.send(data);
   }

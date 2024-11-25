@@ -24,19 +24,90 @@ export const SendMessage: React.FC<Props> = ({
 
   const writeMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!editableMessage) {
-      sendNewMessage(user.login, id, socket, contentMessage);
-      addMessage(contentMessage);
-    } else if (socket && id) {
-      sendEditedMessage(editableMessage, contentMessage, socket, id);
-      removeEditMode();
+    switch (editableMessage?.type) {
+      case 'edit': {
+        if (socket && id)
+          sendEditedMessage(editableMessage, contentMessage, socket, id);
+        removeEditMode();
+        break;
+      }
+      case 'reply': {
+        const data = JSON.stringify({
+          payload: {
+            chatId: id,
+            messageType: 'reply',
+            content: contentMessage,
+            replyToMessageId: editableMessage.id,
+            replyToContent: editableMessage.content,
+            replyToLogin: editableMessage.User.login,
+            userLogin: user.login,
+          },
+          action: 'addMessage',
+        });
+        if ((socket as any)?.readyState == 1) {
+          (socket as any).send(data);
+        }
+        removeEditMode();
+
+        const newMessage = {
+          type: 'text',
+          content: contentMessage,
+          reply_to_message_id: editableMessage.id,
+          replyToContent: editableMessage.content,
+        };
+
+        addMessage(newMessage as any);
+
+        break;
+      }
+      case 'forward': {
+        const data = JSON.stringify({
+          payload: {
+            chatId: id,
+            content: editableMessage.content,
+            messageType: 'forward',
+            userLogin: user.login,
+          },
+          action: 'addMessage',
+        });
+
+        if ((socket as any)?.readyState == 1) {
+          (socket as any).send(data);
+        }
+
+        const newMessage = {
+          content: editableMessage.content,
+          type: 'forward',
+        };
+        const newMessageWithForward = {
+          type: 'text',
+          content: contentMessage,
+        };
+
+        addMessage(newMessage as any);
+        addMessage(newMessageWithForward as any);
+
+        sendNewMessage(user.login, id, socket, contentMessage);
+
+        removeEditMode();
+        break;
+      }
+      default:
+        {
+          sendNewMessage(user.login, id, socket, contentMessage);
+          const newMessage = {
+            content: contentMessage,
+          };
+          addMessage(newMessage as any);
+        }
+        setContentMessage('');
     }
-    setContentMessage('');
   };
 
   useEffect(() => {
-    if (editableMessage) setContentMessage(editableMessage.content);
-    else {
+    if (editableMessage?.type == 'edit') {
+      setContentMessage(editableMessage.content);
+    } else {
       setContentMessage('');
     }
   }, [editableMessage]);

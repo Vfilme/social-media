@@ -1,0 +1,24 @@
+div.anchor {
+  transition: transform 0.3s linear;
+  z-index: 2;
+  position: absolute;
+  right: calc(50% - 21px);
+  bottom: -42px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: white;
+  svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    path {
+      stroke: black;
+      stroke-width: 1;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+  }
+  &.active {
+    transform: translateY(-62px);
+  }
+}

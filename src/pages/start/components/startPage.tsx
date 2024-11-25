@@ -9,7 +9,7 @@ import {
   setSocket,
 } from '../../../shared/store/slices/websocketSlice';
 import { useAppSelector } from '../../../shared/store/hooks/useAppSelector';
-import { WSTypes } from '../../../shared/types/WSTypes';
+import { WSActionsTypes } from '../../../shared/types/WSActionsTypes';
 
 export const StartPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +37,7 @@ export const StartPage: React.FC = () => {
     ws.onopen = () => {
       console.log('Соединение с сервером установлено');
       const data = JSON.stringify({
-        action: WSTypes.SetConnection,
+        action: WSActionsTypes.SetConnection,
         payload: { userLogin: user?.login },
       });
       if (user) {

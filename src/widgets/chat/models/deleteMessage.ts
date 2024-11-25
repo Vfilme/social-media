@@ -1,9 +1,9 @@
-import { WSTypes } from '../../../shared/types/WSTypes';
+import { WSActionsTypes } from '../../../shared/types/WSActionsTypes';
 
 export const deleteMessage = (
   messageId: number,
   chatId: string | undefined,
-  socket: WebSocket
+  socket: WebSocket | null
 ) => {
   try {
     if (chatId && socket?.readyState == 1) {
@@ -12,7 +12,7 @@ export const deleteMessage = (
           id: messageId,
           chatId,
         },
-        action: WSTypes.DeleteMessage,
+        action: WSActionsTypes.DeleteMessage,
       });
       socket.send(data);
     }

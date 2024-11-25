@@ -1,4 +1,4 @@
-export enum WSTypes {
+export enum WSActionsTypes {
   SetConnection = 'setConnection',
   GetMessages = 'getMessages',
   AddMessage = 'addMessage',

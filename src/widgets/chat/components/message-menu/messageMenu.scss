@@ -1,0 +1,29 @@
+@use '../../../../shared/const/borders.scss' as b;
+@use '../../../../shared/const/colors.scss' as c;
+
+div.message-menu {
+  font-size: 16px;
+  padding: 10px;
+  transform: translate(calc(10px - 100%), calc(10px - 100%));
+  z-index: 5;
+  position: fixed;
+  background-color: c.$easy-grey;
+  border-radius: 5px;
+  background-color: c.$hard-grey;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+    li {
+      border-radius: 3px;
+      padding: 5px;
+      &:hover {
+        background-color: c.$easy-grey;
+      }
+      &.delete {
+        color: rgb(255, 64, 64);
+      }
+    }
+  }
+}
