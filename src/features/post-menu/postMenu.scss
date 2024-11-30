@@ -1,0 +1,17 @@
+div.post-menu {
+  justify-content: right;
+  display: flex;
+  flex-grow: 1;
+  svg {
+    margin: auto 0;
+    display: block;
+    width: 23;
+    height: 5px;
+    circle {
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: white;
+      stroke: white;
+    }
+  }
+}

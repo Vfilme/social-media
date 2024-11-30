@@ -1,0 +1,12 @@
+div.post-actions {
+  display: flex;
+  gap: 10px;
+  div {
+    display: flex;
+    gap: 5px;
+    span {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

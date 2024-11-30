@@ -1,0 +1,127 @@
+$border: 0px;
+
+div.post {
+  max-width: 600px;
+  border: $border solid red;
+  border-bottom: 1px solid grey;
+  h4 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  div.container-images {
+    display: flex;
+    img {
+      box-sizing: border-box;
+      width: 100%;
+    }
+  }
+  div.date {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 5px auto;
+    span {
+      color: grey;
+    }
+    div.dot {
+      align-self: center;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: grey;
+    }
+  }
+  p {
+    margin: 10px 0;
+    line-height: 22px;
+    border: $border green dashed;
+    width: 100%;
+  }
+  div.post-header {
+    border: $border solid green;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    div.mock-avatar {
+      width: 32px;
+      height: 32px;
+      background-color: red;
+      border-radius: 50%;
+    }
+  }
+  div.container-post-actions {
+    margin: 10px 0;
+    font-size: 14px;
+    display: flex;
+    border: $border red solid;
+    div.container-post-views {
+      display: flex;
+      flex-grow: 1;
+      justify-content: right;
+    }
+  }
+}
+
+div.container-comments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  border: $border solid green;
+  span.show-comments {
+    margin: 10px 0;
+    display: block;
+    color: grey;
+  }
+  div.comment {
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    padding: 0 10px;
+    div.header-comment {
+      border: $border solid grey;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      div.avatar {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    div.content {
+      margin: 5px 0;
+    }
+    div.footer-comment {
+      color: grey;
+      border: $border green dashed;
+      display: flex;
+      gap: 10px;
+      span {
+        display: flex;
+        align-items: center;
+      }
+      div {
+        color: white;
+        display: flex;
+        flex-grow: 1;
+        justify-content: right;
+      }
+    }
+  }
+  div.add-comment-section {
+    border: $border solid blue;
+    margin: 10px 0;
+    display: flex;
+
+    input {
+      all: unset;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
